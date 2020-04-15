@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <ui:composition template="/private/template/template.xhtml">
+            <ui:define name="conteudo">
+                <p:panel id="panel" header="Carrinho" style="margin: 20px;">
+                    <p:dataTable id="datatable" value="#{carrinhoMB.itens}" var="item"
+                                 emptyMessage="Nenhum registro encontrado" style="margin: 10px;"
+                                 paginator="true" paginatorPosition="bottom" rows="10">
+                        <p:column headerText="Descrição" sortBy="#{item.produto.descricao}">
+                            <h:outputText value="#{item.produto.descricao}"/>
+                        </p:column>
+                        <p:column headerText="Preço R$" width="120" sortBy="#{item.produto.preco}">
+                            <h:outputText value="#{item.produto.preco}">
+                                <f:convertNumber minFractionDigits="2"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Quantidade pedido" width="120" sortBy="#{item.qtdeProduto}">
+                            <h:outputText value="#{item.qtdeProduto}"/>
+                        </p:column>
+                        <p:column headerText="Remover" width="80" style="text-align: center;">
+                            <p:commandButton id="remover" action="#{carrinhoMB.remover(item)}" icon="ui-icon-trash" title="Excluir"
+                                             onclick="if (!confirm('Confirma a remoção do produto?')) return false" update=":form:growl"/>
+                        </p:column>
+                    </p:dataTable>
+                    <div align="center">
+                        <p:commandButton id="novo" value="Novo" action="#{carrinhoMB.novo()}"/>
+                    </div>
+                    
+                </p:panel>
+                <div class="ui-g-2">
+                        <label>Forma de pagamento</label><br/><br/>
+                        <p:selectOneMenu id="formaPag" value="#{carrinhoMB.formaPg}" style="width: 150%"
+                                         required="true" requiredMessage="Forma de pagamento é obrigatório">
+                            <f:selectItem itemValue="Dinheiro" itemLabel="Dinheiro" />
+                            <f:selectItem itemValue="Cartão de Crédito" itemLabel="Cartão de Crédito" />
+                            <f:selectItem itemValue="Boleto Bancário" itemLabel="Boleto Bancário" />
+                            <f:selectItem itemValue="Cheque" itemLabel="Cheque" />
+                        </p:selectOneMenu><br/><br/>
+                        <p:commandButton action="#{carrinhoMB.fechar()}" value="Finalizar" update="growl" style="margin-right: 10px;"/>
+                </div>
+            </ui:define>
+            </ui:composition>
+        </h:form>
+    </h:body>
+    
+</html>
+

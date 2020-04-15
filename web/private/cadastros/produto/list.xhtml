@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <ui:composition template="/private/template/template.xhtml">
+            <ui:define name="conteudo">
+                <p:panel id="panel" header="Produtos" style="margin: 20px;">
+                    <p:dataTable id="datatable" value="#{produtoMB.produtos}" var="produto"
+                                 emptyMessage="Nenhum registro encontrado" style="margin: 10px;"
+                                 paginator="true" paginatorPosition="bottom" rows="10">
+                        <p:column headerText="Descrição" sortBy="#{produto.descricao}">
+                            <h:outputText value="#{produto.descricao}"/>
+                        </p:column>
+                        <p:column headerText="Preço" width="120" sortBy="#{produto.preco}">
+                            <h:outputText value="#{produto.preco}">
+                                <f:convertNumber minFractionDigits="2"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Quantidade estoque" sortBy="#{produto.estoque}">
+                            <h:outputText value="#{produto.estoque}"/>
+                        </p:column>
+                        <p:column headerText="Editar" width="80" style="text-align: center;">
+                            <p:commandButton action="#{produtoMB.buscaDados(produto)}" icon="ui-icon-pencil" title="Editar"/>
+                        </p:column>
+                        <p:column headerText="Excluir" width="80" style="text-align: center;">
+                            <p:commandButton id="excluir" action="#{produtoMB.excluir(produto)}" icon="ui-icon-trash" title="Excluir"
+                                             onclick="if (!confirm('Confirma a exclusão?')) return false" update=":form:growl"/>
+                        </p:column>
+                    </p:dataTable>
+                    <div align="center">
+                        <p:commandButton id="novo" value="Novo" action="#{produtoMB.novo()}"/>
+                    </div>
+                </p:panel>
+            </ui:define>
+            </ui:composition>
+        </h:form>
+    </h:body>
+    
+</html>
+
